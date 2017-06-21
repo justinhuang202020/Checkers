@@ -1,0 +1,22 @@
+textarea {float:left; }
+
+ul{
+	float: left;
+}
+#box1 {
+	position:absolute;
+	left: 0px;
+	clear: both;
+}
+#list {
+	float: left;
+}
+#button{
+	position: relative;
+	clear: both;
+}
+.suggestions{
+	position: relative;
+	height: 120px;
+	width: 120px;
+}
