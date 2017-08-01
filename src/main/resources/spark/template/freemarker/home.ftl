@@ -1,56 +1,49 @@
-<!DOCTYPE html>
-<html>
-
-<!-- Head contains meta data and imports -->
-<head>
-    <link rel="stylesheet" href="css/home.css">
-
-    <!-- define character set in use -->
-    <meta charset="utf-8">
-    <script src="js/jquery-2.1.1.js"></script>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/html5bp.css">
-    <script src="js/ways.js"></script>
-    <script src="js/tiles.js"></script>
-    <script src="js/maps.js"></script>
-    <title>${title}</title>
-
-</head>
-
-<!-- Body contains the page content -->
-<body>
-<h1>Welcome to Maps!</h1>
-<div id="canvas">
-    <canvas id="map" height=500 width=500></canvas>
-</div>
-<div id="form">
-        <p>Enter either lat, long, lat, long coordinates or 2 sets of streets to find shortest path!  </p>
-        <textarea name="street1" value="" id="street1"
-                          placeholder="Enter Street 1"></textarea>
-            <textarea name="street2" value="" id="street2"
-                      placeholder="Enter Street 2"></textarea>
-             <textarea name="street3" value="" id="street3"
-                          placeholder="Enter Street 3"></textarea>
-            <textarea name="street4" value="" id="street4"
-                      placeholder="Enter Street 4"></textarea><br>
-             <br><p id = "result"></p>
-             <p>Check box to toggle street suggestions!</p>
-            <div id = "checkbox">
-            <br><input type = "checkbox" id = "box" class = "acCheckBox">
-            </div>
-            <div id = wrapper>
-            <div id = list>
-            <ul id="suggestion1" class = "suggestions"></ul>
-             <ul id="suggestion2" class = "suggestions"></ul>
-              <ul id="suggestion3" class = "suggestions"></ul>
-            <ul id="suggestion4" class = "suggestions"></ul><br>
-            </div>
-            <div id = buttons>
-            <center><br><br><input type="submit" id = "submit" value="submit form!"></center>
-           <center> <br> <input type = "submit" id = "clear" value = "clear path"></input><center>
-           </div>
-</div>
-</body>
-
-<!-- Make sure to close all your tags! -->
+<!DOCTYPE html>		
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="css/home.css">
+		<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+	<script src="js/home.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    	apiKey: "AIzaSyBkLLymXvSPFY9UVvYhhaXbwOX7ofcXhcA",
+    	authDomain: "mmo-checkers.firebaseapp.com",
+    	databaseURL: "https://mmo-checkers.firebaseio.com",
+    	projectId: "mmo-checkers",
+    	storageBucket: "mmo-checkers.appspot.com",
+    	messagingSenderId: "424431155329"
+  		};
+  	firebase.initializeApp(config);
+	</script>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+      <li><a href = "" id = "signout" onclick = "signOut()">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+<div id = "content">
+ <center><h1>Welcome to MMO Checkers!</h1></center>
+ </div>
+ <style>
+/*h1 {text-align:center}*/
+button{text-align: center}
+label{text-align: center}
+</style>
 </html>

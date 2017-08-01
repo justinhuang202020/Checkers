@@ -2,16 +2,15 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
 	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 	crossorigin="anonymous"></script>
+	<script src="js/game.js"></script>
 		<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-     <link rel="stylesheet" href="css/home.css">
 		<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		
+	  <link rel="stylesheet" href="css/game.css">
 	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-	<script src="js/home.js"></script>
 <script>
   // Initialize Firebase
   var config = {
@@ -24,26 +23,13 @@
   		};
   	firebase.initializeApp(config);
 	</script>
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
-      <li><a href="#">Page 3</a></li>
-      <li><a href = "" id = "signout" onclick = "signOut()">Sign Out</a></li>
-    </ul>
-  </div>
-</nav>
-<div id = "content">
- <center><h1>Welcome to MMO Checkers!</h1></center>
- </div>
- <style>
-/*h1 {text-align:center}*/
-button{text-align: center}
-label{text-align: center}
-</style>
-</html>
+	<body>
+	<!-- <div class = "container"> -->
+	<div class = "loader">
+	</div> <br>
+	<!-- </div> -->
+	<div id = "text">
+		<h1>Loading...<br>Finding Game</h1>
+	</div>
+	</body>
+	</html>

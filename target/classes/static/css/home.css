@@ -1,22 +1,12 @@
-textarea {float:left; }
-
-ul{
-	float: left;
+label{
+	display: block;
+	text-align: center;
 }
-#box1 {
-	position:absolute;
-	left: 0px;
-	clear: both;
+h1{
+	text-align: center;
 }
-#list {
-	float: left;
-}
-#button{
-	position: relative;
-	clear: both;
-}
-.suggestions{
-	position: relative;
-	height: 120px;
-	width: 120px;
+button{
+	display: block;
+	text-align: center;
+	margin: 0 auto;
 }
