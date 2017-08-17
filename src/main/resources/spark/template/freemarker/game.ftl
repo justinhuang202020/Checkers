@@ -39,10 +39,12 @@
 	<h1 id = "winner">You won!</h1>
 	<h1 id = "forfeit">You won by forfeit!</h1>
 	<h1 id = "loser">You lost!</h1>
-	<div class = "loader">
-	</div> <br>
+	<div id - "container">
+	<center><div class = "loader">
+	</div></center> <br>
 	<div id = "text">
-		<h1>Loading...<br>Finding Game</h1>
+	<center><h1 id = "loading">Loading...<br>Finding Game</h1></center>
+	</div>
 	</div>
 	<div id = "boardDiv">
 		<canvas id = "board"  style="border:1px solid" ></canvas>

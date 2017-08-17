@@ -148,10 +148,10 @@ function setup_connection () {
         break;
 
         case MESSAGE_TYPE.ISTURN:
+                 $("#opponentsTurnText").hide();
         console.log("turn!");
          $("#isTurnText").show();
          blink($("#isTurnText"));
-         $("#opponentsTurnText").hide();
         isTurn = true;
         break;
 
@@ -182,8 +182,9 @@ function setup_connection () {
         }
         break;
         case MESSAGE_TYPE.ENDTURN:
+        console.log("blink end turn");
         console.log("endTurn");
- 		$("#isTurnText").hide();
+ 		   $("#isTurnText").hide();
         $("#opponentsTurnText").show();
         blink($("#opponentsTurnText"));
        isTurn = false;
@@ -206,7 +207,6 @@ function setup_connection () {
         $("#forfeit").show();
         $("#winner").show();
         blink( $("#forfeit"));
-        blink( $("#winner"));
         $("#isTurnText").hide();
         $("#opponentsTurnText").hide();
 
