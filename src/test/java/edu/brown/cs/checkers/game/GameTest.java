@@ -270,6 +270,7 @@ public class GameTest {
         player1.move(currPiece, 4, 2, 6, 4, board);
         game.updateMoves();
         player1.move(currPiece, 6, 4, 4, 6, board);
+        System.out.println("yo " + board.getMovablePiecesRed().size());
          assertTrue(board.getMovablePiecesRed().size() == 9);
         game.updateMoves();
         currPiece = board.search(3, 7);

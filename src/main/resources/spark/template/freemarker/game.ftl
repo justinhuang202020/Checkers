@@ -24,12 +24,41 @@
   	firebase.initializeApp(config);
 	</script>
 	<body>
-	<!-- <div class = "container"> -->
+	<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">MMO Checkers</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/game">Join New Game</a></li>
+      <li><a href = "" id = "signout" onclick = "signOut()">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+	<h1 id = "opponent"></h1>
+	<h1 id = "winner">You won!</h1>
+	<h1 id = "forfeit">You won by forfeit!</h1>
+	<h1 id = "loser">You lost!</h1>
 	<div class = "loader">
 	</div> <br>
-	<!-- </div> -->
 	<div id = "text">
 		<h1>Loading...<br>Finding Game</h1>
 	</div>
+	<div id = "boardDiv">
+		<canvas id = "board"  style="border:1px solid" ></canvas>
+		<div id = "turnStatus">
+		<h1 id = "isTurnText">It's your turn!</h1>
+		<h1 id = "opponentsTurnText"></h1>
+		</div>
+	</div>
+	 <div class="col-sm-2 sidenav" id = "leftNav">
+	<div id="chatting" class="list-group">
+    </div>
+    <div id = "otherChatElements">
+    <textarea name="message" value="" id="messageField"
+     placeholder="Enter Message!"></textarea><br>
+    <Button id = "chatButton" >Send</Button>
+    </div>
+    </div>
 	</body>
 	</html>

@@ -6,29 +6,24 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Created by Justin on 6/7/2017.
  */
 public class Game {
     private Board board;
-    private int turnCounter;
     private boolean startGame;
     private List<Player> playerList;
     private static int maxPlayers = 2;
     private boolean gameWon;
     private boolean redWon;
     private boolean blackWon;
-    private boolean turnEnded;
     private Player currentTurn;
     private UUID gameID;
 
 
     public Game(UUID id) {
-        turnEnded = false;
         gameID = id;
-        turnCounter = 0;
         gameWon = false;
         currentTurn = null;
         startGame = false;
@@ -88,7 +83,7 @@ public class Game {
        
     	if (board.getBlackPiecesList().size() == 0) {
     		gameWon =true;
-    		blackWon = true;
+    		blackWon = false;
     	}
     	else if (board.getRedPiecesList().size() ==0) {
     		gameWon = true;
@@ -107,7 +102,7 @@ public class Game {
     			System.out.println("red won!");
     		}
     		for (int i = 0; i < playerList.size(); i ++) {
-    			playerList.get(i).gameEnded();;
+    			playerList.get(i).gameEnded();
     		}
     	}
     }
@@ -130,6 +125,6 @@ public class Game {
     	return blackWon;
     }
     public boolean redWon() {
-    	return redWon();
+    	return redWon;
     }
 }

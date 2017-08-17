@@ -1,5 +1,32 @@
-.container{
-	position: absolute;
+#container{
+	position: relative;
+	/*left: 10%;
+	float: left;*/
+}
+   .chat {
+    background-color: white;
+    margin-bottom: 5px;
+    }
+ #chatting {
+ 		/*position: absolute;*/
+      display: inline-block;
+      padding: 10px;
+      border: 2px solid black;
+      width: 160px;
+      height: 400px;
+      overflow-y: scroll;
+      list-style-type: none;
+      background-color: #848988;
+      overflow:auto;
+      /*right: 15%;*/
+      }
+  #otherChatElements{
+  	/*position: absolute;*/
+  	display: inline-block;
+  	/*right: 15%;*/
+  }
+#boardDiv{
+	float: left;
 }
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */

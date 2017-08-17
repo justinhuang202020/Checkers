@@ -32,7 +32,6 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class Main {
 
 	private static final int DEFAULT_PORT = 4567;
-	// private static StartProgram p;
 	private static final Gson GSON = new Gson();
 	private static playerRecords database;
 	private static Matches matches;

@@ -62,6 +62,7 @@ public class Board {
         }
     }
     protected void  allBlackMoves() {
+    	
         blackMustJump = false;
         for (int i = 0; i<COORDS; i ++) {
             int start;
@@ -72,10 +73,7 @@ public class Board {
                 start = 1;
             }
             for (int j = start; j<COORDS; j+=2) {
-            	System.out.println("i " + i);
-            	System.out.println("j " + j);
                 Piece currPiece = board[j][i];
-                System.out.println(currPiece);
                 if (currPiece!=null) {
 	                if (currPiece.isBlack()) {
 	                    Map<String, Map<Integer, List<Integer>>> result = possibleMovesBlack(j, i, currPiece);
@@ -160,7 +158,7 @@ public class Board {
                 normalMove.put(x-1, rightYNormal);
             }
         }
-        if (jumpMove.size() == 0&& normalMove.size()!=0) {
+        if (jumpMove.size() == 0 && normalMove.size()!=0) {
             blackMustJump = false;
             moves.put("normal", normalMove);
         }
@@ -188,31 +186,32 @@ public class Board {
         List<Integer> rightYNormal = new ArrayList<>();
         List<Integer> leftYNormal = new ArrayList<>();
         if (redCanJumpLeft(x, y)) {
+        	System.out.println("redCanJumpLeft");
             leftYJump.add(y-2);
             jumpMove.put(x-2, leftYJump);
         }
-        else if (inBounds(x-1, y-1) &&  redMustJump == false && search(x-1, y-1) ==null) {
+        else if (inBounds(x-1, y-1) &&  !redMustJump && search(x-1, y-1) ==null) {
         	leftYNormal.add(y-1);
             normalMove.put(x-1, leftYNormal);
         }
         if (redCanJumpRight(x, y)) {
+        	System.out.println("redCanJumpRight");
             redMustJump = true;
             rightYJump.add(y-2);
             jumpMove.put(x+2, rightYJump);
         }
-        else if (inBounds(x+1, y-1) &&  redMustJump == false && search(x+1, y-1) ==null) {
+        else if (inBounds(x+1, y-1) &&  !redMustJump && search(x+1, y-1) ==null) {
         	rightYNormal.add(y-1);
             normalMove.put(x+1, rightYNormal);
 
         }
-        System.out.println(currPiece.isKing());
         if (currPiece.isKing()) {
             if (redCanJumpBackLeft(x, y)) {
                 redMustJump = true;
                 leftYJump.add(y+2);
                 jumpMove.put(x-2, leftYJump);
             }
-            else if (inBounds(x-1, y+1) && redMustJump == false && search(x-1, y+1) ==null) {
+            else if (inBounds(x-1, y+1) && !redMustJump && search(x-1, y+1) ==null) {
             	leftYNormal.add(y+1);
                 normalMove.put(x-1, leftYNormal);
             }
@@ -221,9 +220,9 @@ public class Board {
                  rightYJump.add(y+2);
                  jumpMove.put(x+2, rightYJump);
             }
-            else if (inBounds(x-1, y+1) && redMustJump == false && search(x+1, y+1) ==null) {
+            else if (inBounds(x+1, y+1) && !redMustJump && search(x+1, y+1) ==null) {
             	rightYNormal.add(y+1);
-                normalMove.put(x-1, rightYNormal);
+                normalMove.put(x+1, rightYNormal);
              }
         }
         if (jumpMove.size() == 0 && normalMove.size() != 0) {
@@ -232,11 +231,6 @@ public class Board {
         else if (jumpMove.size() !=0) {
             redMustJump = true;
             moves.put("jump", jumpMove);
-        }
-        if (x == 2 && y == 4) {
-        	 System.out.println("jump " + jumpMove);
-             System.out.println("normal " + normalMove);	
-             System.out.println("moves " + moves);
         }
         return moves;
     }
@@ -269,7 +263,6 @@ public class Board {
             Iterator<Entry<Piece, Map<String, Map<Integer, List<Integer>>>>> it = allPossibleMovesRed.entrySet().iterator();
             while (it.hasNext()) {
                 Entry<Piece, Map<String, Map<Integer, List<Integer>>>> curr = it.next();
-                System.out.println("curr " + curr);
                 boolean containsNormal = curr.getValue().containsKey("normal");
                 boolean containsJump = curr.getValue().containsKey("jump");
                 if (containsNormal && containsJump) {
@@ -443,17 +436,14 @@ public class Board {
         else {
             check = allPossibleMovesRed;
         }
-        System.out.println(check);
         if (!validMove(xStart, yStart, xEnd, yEnd, currPiece)) {
             throw  new IllegalArgumentException("move is not valid");
         }
 
         if(check.get(currPiece).containsKey("jump")) {
-        	System.out.println("jump move");
             return jumpMove(xStart, yStart, xEnd, yEnd, currPiece);
         }
         else if (check.get(currPiece).containsKey("normal")){
-        	System.out.println("normal");
             return normalMove(xStart, yStart, xEnd, yEnd, currPiece);
         }
 
@@ -472,14 +462,13 @@ public class Board {
         return false;
     }
     private boolean jumpMove(int xStart, int yStart, int xEnd, int yEnd, Piece currPiece) {
+    	System.out.println("jumpMove check");
         board[xEnd][yEnd] = currPiece;
         boolean becameKing = false;
         boolean isNotKing = false;
         currPiece.setCoordinates(xEnd, yEnd);
         int jumpPieceXCoordiante = (xStart + xEnd) /2;
         int jumpPieceYCoordiante = (yStart + yEnd) /2;
-        System.out.println("jx  " + jumpPieceXCoordiante );
-        System.out.println("jy " + jumpPieceYCoordiante);
         board[xStart][yStart] = null;
         if (currPiece.isBlack()) {
             redPiecesList.remove(search(jumpPieceXCoordiante, jumpPieceYCoordiante));
@@ -516,7 +505,6 @@ public class Board {
         return ImmutableList.copyOf(blackPiecesList);
     }
     protected void canKing(Piece piece) {
-    	System.out.println("kingMe " + piece);
         if (piece.isBlack()) {
             if (piece.getYCoordinate() == 7) {
                 piece.kingMe();

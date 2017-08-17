@@ -59,6 +59,7 @@ public class playerRecords {
 			    + "losses INTEGER,"
 			    + "forfeits INTEGER,"
 			    + "userName TEXT,"
+			    + "winsByForfeit INTEGER,"
 			    + "PRIMARY KEY (email));");
 			 prep.executeUpdate();
 			 System.out.println("here");
@@ -96,26 +97,5 @@ public class playerRecords {
 		}
 		return true;
 	}
-	private synchronized String getUserName(String email) {
-		if (conn == null) {
-			System.out.println("database is not connected");
-			return "";
-		}
-		PreparedStatement prep;
-		String userName = null;
-		try {
-			prep = conn.prepareStatement(
-					  "SELECT userName, losses FROM player WHERE email = ?;");
-			prep.setString(1, email);
-			ResultSet rs = prep.executeQuery();
-			while(rs.next()) {
-				userName = rs.getString(1);
-				
-			}
-		} catch (SQLException e) {
-			System.out.println("Entry not found");
-		}
-		return userName;
-		
-	}
+
 }
