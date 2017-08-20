@@ -60,5 +60,15 @@
     <Button id = "chatButton" >Send</Button>
     </div>
     </div>
+   <div id="myModal" class="modal">
+     <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" id = "closer">&times;</span>
+    <p id = "wins"></p>
+    <p id = "losses"></p>
+    <p id = "winsByForfeit"></p>
+    <p id = "forfeits"></p>
+  </div>
+</div>
 	</body>
 	</html>

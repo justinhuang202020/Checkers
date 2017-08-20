@@ -1,6 +1,7 @@
 package edu.brown.cs.checkers.game;
 
 /**
+ * checker Piece that knows its own position 
  * Created by Justin on 6/7/2017.
  */
 public class Piece {
@@ -11,10 +12,12 @@ public class Piece {
 
 
     public Piece(String color, int initialXCoordinate, int initialYCoordinate) {
+    	//color has to be red or black
         if (!color.equals("red") && !color.equals("black")) {
             throw new IllegalArgumentException();
         }
         pieceColor = color;
+        //checks that its intial coordinate is in bounds
         assert(initialXCoordinate<8 && initialXCoordinate>=0);
         assert(initialYCoordinate<8 && initialYCoordinate>=0);
         xPosition = initialXCoordinate;
@@ -32,6 +35,11 @@ public class Piece {
     public boolean isKing() {
         return isKing;
     }
+    /**
+     *sets the new coordinates of the piece
+     * @param xCoordinate
+     * @param yCoordinate
+     */
     protected void setCoordinates(int xCoordinate, int yCoordinate) {
 
         assert(xCoordinate<8 && yCoordinate>=0);

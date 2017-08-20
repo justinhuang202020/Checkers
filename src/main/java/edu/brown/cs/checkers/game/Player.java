@@ -4,6 +4,8 @@ import java.util.Objects;
 
 /**
  * Created by Justin on 6/13/2017.
+ * Handles each player in a checkers game. Moving power is given to the player
+ * as the move is legal
  */
 public class Player {
 	private boolean isBlack;
@@ -14,8 +16,12 @@ public class Player {
 	private Player opponent;
 	private String name;
 	private boolean forfeit;
+	private boolean won;
+	private boolean loss;
+	private boolean gameEnded;
 
 	public Player(String userName) {
+		gameEnded = false;
 		jumpMove = false;
 		forfeit = false;
 		isTurn = false;
@@ -23,17 +29,23 @@ public class Player {
 		jumpPiece = null;
 		opponent = null;
 		name = userName;
+		won = false;
+		loss = false;
 
 	}
 
 	public String userName() {
 		return name;
 	}
-
+	/**
+	 *sets the player to black
+	 */
 	protected void setBlack() {
 		isBlack = true;
 	}
-
+/**
+ *sets the player to red
+ */
 	protected void setRed() {
 		isBlack = false;
 	}
@@ -45,49 +57,69 @@ public class Player {
 	public boolean isTurn() {
 		return isTurn;
 	}
-
+	protected void setWinner() {
+		won = true;
+	}
+	protected void setLoser() {
+		loss = true;
+	}
+	public boolean isWinner() {
+		return won;
+	}
+	public boolean isLoser() {
+		return loss;
+	}
 	protected void turnStarted() {
-		System.out.println("turn started");
 		isTurn = true;
 	}
 
 	protected void setGameHasStarted() {
-		startGame = false;
+		startGame = true;
 	}
 
 	protected boolean hasGameStarted() {
 		return startGame;
 	}
-
+	public boolean hasGameEnded() {
+		return gameEnded;
+	}
 	protected void gameEnded() {
+		gameEnded = true;
 		isTurn = false;
 	}
-
+/**
+ * resets the variables and tells the opponent player that it is there turn 
+ */
 	protected void turnEnded() {
-		System.out.println("player ended turn");
 		jumpPiece = null;
 		isTurn = false;
 		jumpMove = false;
 		opponent.turnStarted();
 	}
-	// protected void getMovablePieces(Board board) {
-	//
-	// }
-
+/**
+ *Player moves their piece if it is legal
+ * @param currPiece
+ * @param xStart
+ * @param yStart
+ * @param xEnd
+ * @param yEnd
+ * @param board
+ */
 	protected void move(Piece currPiece, int xStart, int yStart, int xEnd, int yEnd, Board board) {
 		if (!isTurn) {
 			throw new IllegalArgumentException("is not your turn");
 		}
+		// if the move is a second jump move, make sure the current piece is the exact same piece as the last move 
 		if (jumpMove && currPiece != jumpPiece) {
 			throw new IllegalArgumentException("cannot move piece");
 		}
 		if (board.validMove(xStart, yStart, xEnd, yEnd, currPiece)) {
+			//if board.move() returns true which means that there is still another move
 			if (board.move(xStart, yStart, xEnd, yEnd, currPiece)) {
-				System.out.println("line 75 move again");
+				//assigns the currPiece to jumpPiece so it can be referenced next time the player moves in case of a jump move
 				jumpPiece = currPiece;
 				jumpMove = true;
 			} else {
-				System.out.println("turn ended line 80");
 				this.turnEnded();
 			}
 		} else {
@@ -95,7 +127,10 @@ public class Player {
 		}
 
 	}
-
+/**
+ * sets the opponent 
+ * @param player
+ */
 	protected void setOpponent(Player player) {
 		opponent = player;
 	}
@@ -116,7 +151,7 @@ public class Player {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+ 	public boolean equals(Object o) {
 		if (!(o instanceof Player)) {
 			return false;
 		}
@@ -125,7 +160,6 @@ public class Player {
 			return true;
 		}
 		return false;
-
 	}
 	protected void forfeit() {
 		forfeit = true;

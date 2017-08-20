@@ -5,14 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
-import edu.brown.cs.checkers.game.Matches;
-import edu.brown.cs.checkers.records.playerRecords;
+import edu.brown.cs.checkers.game.playerRecords;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -49,15 +47,10 @@ public final class Main {
 		Class.forName("org.sqlite.JDBC");
 		String urlToDB = "jdbc:sqlite:" + "db.sqlite3";
 		Connection conn = DriverManager.getConnection(urlToDB);
-		// these two lines tell the database to enforce foreign
-		// keys during operations, and should be present
 		Statement stat = conn.createStatement();
 		stat.executeUpdate("PRAGMA foreign_keys = ON;");
 		database.setConnection(conn);
-		System.out.println("here");
 		matches = new Matches();
-		matches.setConnection(conn);
-		System.out.println("there");
 		new Main(args).run();
 	}
 
@@ -107,11 +100,11 @@ public final class Main {
 		//
 	}
 
-	// /**
-	// * Handle requests to the front page of our Stars website.
-	// *
-	// * @author jj
-	// */
+	 /**
+	 * Handle requests to the login page.
+	 *
+	 * @author jj
+	 */
 	private static class LoginHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
@@ -119,7 +112,11 @@ public final class Main {
 			return new ModelAndView(variables, "login.ftl");
 		}
 	}
-
+/**
+ * Handles request to home page
+ * @author Justin Huang
+ *
+ */
 	private static class HomePageHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
@@ -127,7 +124,11 @@ public final class Main {
 			return new ModelAndView(variables, "home.ftl");
 		}
 	}
-
+/**
+ * Handles account sign up and adds it to the database
+ * @author Justin Huang
+ *
+ */
 	private static class CreateUserHandler implements Route {
 		@Override
 		public String handle(Request req, Response res) {
@@ -136,37 +137,46 @@ public final class Main {
 			String lastName = qm.value("lastName");
 			String email = qm.value("email");
 			String userName = qm.value("userName");
-			System.out.println(userName);
 			boolean success = database.addPlayer(email, firstName, lastName, userName);
-			System.out.println("sucess " + success);
 			Map<String, Object> variables = ImmutableMap.of("success", success);
 			return GSON.toJson(variables);
 		}
 	}
-
+/**
+ * For the home page. Gets the record from the database for the user
+ * @author Justin Huang
+ *
+ */
 	private static class recordHandler implements Route {
 		@Override
 		public String handle(Request req, Response res) {
 			QueryParamsMap qm = req.queryMap();
 			String email = qm.value("email");
 			int[] record = database.getRecord(email);
-			System.out.println(record);
 			Map<String, Object> variables = ImmutableMap.of("record", record);
 			return GSON.toJson(variables);
 		}
 	}
+	/**
+	 *checks if a user already has a game in progress
+	 * @author Justin Huang
+	 *
+	 */
 	private static class duplicateConnectionHandler implements Route {
 		@Override
 		public String handle(Request req, Response res) {
 			QueryParamsMap qm = req.queryMap();
 			String email = qm.value("email");
 			boolean duplicate = matches.duplicateConnection(email);
-			System.out.println("duplicate " + duplicate);
 			Map<String, Object> variables = ImmutableMap.of("duplicate", duplicate);
 			return GSON.toJson(variables);
 		}
 	}
-
+/**
+ *handles game page
+ * @author Justin Huang
+ *
+ */
 	private static class GamePageHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
