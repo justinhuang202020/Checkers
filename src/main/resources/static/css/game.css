@@ -68,6 +68,9 @@
 #boardDiv{
 	float: left;
 }
+#loading {
+  text-align: center;
+}
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
@@ -76,19 +79,21 @@
     height: 120px;
     animation: spin 2s linear infinite;
       margin: 0;
-    position: absolute;
+      margin-top: 10%;
+      bottom: 30%;
+    /*position: fixed;
     top: 40%;
     left: 45%;
-    transform: translate(-50%, -50%);
+*/    transform: translate(-50%, -50%);
     /*float: left;*/
 
   /*transform: translateY(-50%);*/
     }
 #text{
-	 position: absolute;
+/*	 position: fixed;
     top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: 50%;
+    transform: translate(-50%, -50%);*/
     text-align: center;
 
 }
