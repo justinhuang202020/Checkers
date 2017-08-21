@@ -95,7 +95,8 @@ function setModal() {
     document.getElementById('myModal').style.display = "block";
 }
 function setup_connection () {
-	conn = new WebSocket("ws://localhost:4567/matches");
+	// conn = new WebSocket("ws://localhost:4567/matches");
+    conn = new WebSocket("ws://104.131.23.151/matches");
 	conn.onopen = function(event) {
 		connected = true;
 	};
