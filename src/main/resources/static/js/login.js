@@ -22,7 +22,6 @@ function switchToSignUp() {
 	$("#signup").show();
 	$("#forgotPasswordField").hide();
 
-	// console.log($signup.css('backgroundColor').toString());
 }
 function forgotPassword() {
 		let $login = $("#loginOption");
@@ -42,13 +41,6 @@ $(document).ready(function() {
   		if (user && user.emailVerified) {
   			window.location = "/";					
   		} else {
-  			// document.querySelector('#reset').addEventListener('keypress', function (e) {
-  			// 	console.log("Hi");
-  			// 	var key = e.which || e.keyCode;
-  			// 	if (key === 13) {
-  			// 		passwordReset(e);
-  			// 	}
-  			// });
   			
   			
   			$('#submitLogin').on('click', function(e){
@@ -123,7 +115,6 @@ function createAccount() {
 
 	if (pass ===confirmPass && email ===confirmEmail && firstName.length!==0 && lastName.length!==0 && userName.length !==0) {
 
-	//do the stuff with Firebase locally and not with the server? perhaps not
 	firebase.auth().createUserWithEmailAndPassword(email, pass).then(function() {
 		sendEmailVerification(email, firstName, lastName, userName);
 

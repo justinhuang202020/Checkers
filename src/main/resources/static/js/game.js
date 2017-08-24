@@ -15,8 +15,10 @@ let isTurn = false;
 
 let possibleMoves;
 let opponentRecord;
+//size of one row of a checkers board
 const BOARD_SIZE = 8;
 const TILE_SIZE = 50;
+//different message types sent via sockets
 const MESSAGE_TYPE = {
   JOINGAME: 0,
   STARTGAME: 1,
@@ -35,6 +37,7 @@ const MESSAGE_TYPE = {
 let connected = false;
 let gameOver = false;
 window.setInterval(function(){
+    //sends a message to the backend every 5 seconds so program doesn't disconnect easily
 	if (connected) {
   	let mess = {"type": MESSAGE_TYPE.PING};
   	conn.send(JSON.stringify(mess));
@@ -51,6 +54,7 @@ const sendMessage = event => {
         let mess = {"type" : MESSAGE_TYPE.MESSAGE, "message": message, "userName": userName, "isBlack": isBlack};
         conn.send(JSON.stringify(mess));
     }
+    //clears the message field
     $('#messageField').val("");
 }
 
@@ -66,6 +70,7 @@ $(document).ready(function(){
       sendMessage();
     }
 });
+    //hides all unecessary divs on startup
 	$("#boardDiv").hide();
 	$("#chatting").hide();
 	$("#otherChatElements").hide();
@@ -73,11 +78,13 @@ $(document).ready(function(){
 	$("#forfeit").hide();
 	$("#loser").hide();
 	$("#winner").hide();
+    //if not logged in redirect to login page
  	firebase.auth().onAuthStateChanged(function(user) {
     	if (!user) {
     		window.location = "/login";
     	}
     	userEmail = user.email;
+        //sends message to backend checking if the user (based on their email) is already in a game
     	let parameters = {email: user.email};
     	$.post('/checkDuplicate', parameters, function (result){
     		let duplicate = JSON.parse(result).duplicate;
@@ -124,10 +131,10 @@ function setup_connection () {
         break;
 
         case MESSAGE_TYPE.STARTGAME:
-        console.log("Start Game");
-        console.log(data);
+        //sets if the player is black
         isBlack = data.isBlack;
         opponentRecord = data.opponentRecord;
+        //sets the record of the opponent into the modal to be cached
         document.getElementById('wins').innerHTML = "Wins: " + opponentRecord[0];
         document.getElementById('losses').innerHTML = "Losses: " + opponentRecord[1];
         document.getElementById('winsByForfeit').innerHTML = "Wins By Forfeit: " + opponentRecord[2];
@@ -166,10 +173,13 @@ function setup_connection () {
         case MESSAGE_TYPE.GETPOSSIBLEMOVES:
         clicked = true;
         possibleMoves = undefined;
+        //gets the cords of possible moves of a piece stored in a map with an x coordinate key and a value of an array of y coordiantes
         possibleMoves = data.cords;
         let moves = possibleMoves;
+        //gets the x cord and y cord of the piece
         piece.xCord = data.pieceXCord;
         piece.yCord = data.pieceYCord;
+        //gets the movetype of the piece (normal move or jump move)
         moveType = data.moveType;
          drawPossibleMoves(moves);
         break;
@@ -209,6 +219,7 @@ function setup_connection () {
         $("#opponentsTurnText").hide();
 
         break;
+        //sends a chat message 
         case MESSAGE_TYPE.MESSAGE:
         getMessage(data.message.toString(), data.userName.toString(), data.isBlack);
         break;
@@ -237,7 +248,7 @@ function getMessage(message, messageName, messageIsBlack) {
   }
   $li.css("border", "1px solid " + color);
     $li.css("border-left", "6px solid " + color);
-    // blink($li);
+    blink($li);
 
     $("#chatting").scrollTop($("#chatting")[0].scrollHeight);
 }
@@ -259,9 +270,11 @@ function getRidOfPossibleMoves(moves) {
 		let xCord = key;
 		let currYCord;
 		let yCords = moves[key];
+        // if black, board is flipped and cords must be accounted as such
 		if (isBlack) {
 			xCord = 7-xCord;
 		}
+        // for each y cord associated with the x cord
 		for (let i = 0; i<yCords.length; i ++) {
 			currYCord = yCords[i];
 			if (isBlack) {
@@ -269,6 +282,7 @@ function getRidOfPossibleMoves(moves) {
 			}
 			ctx.beginPath();
 			ctx.lineWidth = 0;
+            // replaces the green circle with the brown color
 			ctx.arc(xCord*TILE_SIZE + TILE_SIZE/2, currYCord*TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2, 0, 2*Math.PI);
 			ctx.fillStyle = "brown";
 			ctx.fill();
@@ -290,6 +304,7 @@ function drawPossibleMoves(moves) {
             }
 			ctx.beginPath();
 			let x = xCord*TILE_SIZE + TILE_SIZE/2;
+            // the radius is slightly smaller than TILE_SIZE/2 so that when the green circle is erased all of it will be erased
 			ctx.arc(xCord*TILE_SIZE + TILE_SIZE/2, currYCord*TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2-2, 0, 2*Math.PI);
 			ctx.fillStyle = "green";
 			ctx.fill();
@@ -306,11 +321,13 @@ function visuallyMovePiece(xStart, yStart, xEnd, yEnd, pieceIsBlack, isKing) {
 	}
     let textColor;
 	ctx.beginPath();
+    //replaces the piece that is to be moved with the brown background
 	ctx.arc(xStart * TILE_SIZE + TILE_SIZE/2, yStart * TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2, 0, 2*Math.PI);
 	ctx.fillStyle = "brown";
 	ctx.fill();
 	ctx.closePath();
 	ctx.beginPath();
+    //replaces the new spot with the piece's color
 	ctx.arc(xEnd * TILE_SIZE + TILE_SIZE/2, yEnd * TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2-2, 0, 2*Math.PI);
 	if (pieceIsBlack) {
 		ctx.fillStyle = "black";
@@ -330,20 +347,22 @@ function visuallyMovePiece(xStart, yStart, xEnd, yEnd, pieceIsBlack, isKing) {
 
 }
 function removeOpponentPiece(xStart, yStart, xEnd, yEnd) {
+    // replaces the opponent piece with the brown board color
 	if (isBlack) {
 		xStart = 7-xStart;
 		yStart = 7-yStart;
 		xEnd = 7-xEnd;
 		yEnd = 7-yEnd;
 	}
-	removePieceX = (xStart + xEnd)/2;
-	removePieceY = (yStart + yEnd)/2;
+	let removePieceX = (xStart + xEnd)/2;
+	let removePieceY = (yStart + yEnd)/2;
 	ctx.beginPath();
 	ctx.arc(removePieceX * TILE_SIZE + TILE_SIZE/2, removePieceY * TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2, 0, 2*Math.PI);
 	ctx.fillStyle = "brown";
 	ctx.fill();
 	ctx.closePath();
 }
+// handles board clicks
 function boardClick(e) {
 	if (!gameOver) {
 		let parentOffset = $(this).parent().offset();
@@ -353,19 +372,22 @@ function boardClick(e) {
 			xCord = 7-xCord;
 			yCord =  7-yCord;
 		}
+        // if it's the players turn and the click is in bounds
 		if (isTurn && xCord>=0 && yCord >=0) {
 			let mess;
+            // if this click comes after a click that revealed a piece's possible moves, send the information to the backend
 			if (clicked) {
 				clicked = false;
 				mess = {"moveType": moveType, "type": MESSAGE_TYPE.MOVE, "pieceXCord": piece.xCord, "pieceYCord": piece.yCord, "moveToXCord": xCord, "moveToYCord": yCord, "userName": userName, "isBlack": isBlack};
 				conn.send(JSON.stringify(mess));
 			}
 			else {
-
+                // else send an information request for possible moves for a piece
 				mess = {"type": MESSAGE_TYPE.GETCORDS, "pieceXCord": xCord, "pieceYCord": yCord, "userName": userName, "isBlack": isBlack};
 				conn.send(JSON.stringify(mess)); 
 			}
 		}
+        // get rid of any possiblemoves (green circles) if they exist
 		if (possibleMoves !==undefined) {
 			let moves = possibleMoves;
 			getRidOfPossibleMoves(moves);
@@ -388,8 +410,9 @@ function drawBoard() {
 
     // set line color
     ctx.strokeStyle = 'black';
-
+// Depending on what row it is on (j), the ordering of whether brown or light brown goes first in the column
     for (let i = 0; i<8; i ++) {
+        //arbritary name to determine whether brown or light brown color is put first on the first column of the row
     	let black;
         if (i%2 === 0) {
             black = 0;
@@ -420,8 +443,12 @@ function drawBoard() {
     } 
     addPieces();
 }
+
 function addPieces() {
+    //same as back end. Whether the player is black or not affects this
+    //this for loop handles the first 3 rows of pieces
 	for (let i = 0; i<3; i ++) {
+        //determines which column should the pieces start being placed
 		let start;
 		 if (i%2 == 0) {
                 start = 0;
@@ -446,6 +473,7 @@ function addPieces() {
 			ctx.closePath();
 		}
 	}
+    //handles the last three rows 
 	for (let i = 5; i<8; i ++) {
 		let start;
 		 if (i%2 == 0) {
